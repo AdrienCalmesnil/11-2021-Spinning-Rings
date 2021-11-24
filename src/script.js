@@ -24,23 +24,31 @@ const planeGeometry = new THREE.TorusGeometry(1.8, 0.05, 16, 100 )
 const planeGeometry2 = new THREE.TorusGeometry(1.9, 0.05, 16, 100 )
 const planeGeometry3 = new THREE.TorusGeometry(1.7, 0.05, 16, 100 )
 const boxGeometry = new THREE.IcosahedronGeometry(1)
-const floorGeometry = new THREE.CylinderGeometry(2.1, 4.8, 8, 8)
+const floorGeometry = new THREE.CylinderGeometry(2.1, 4.8, 8, 64)
 
 // Materials
 const material = new THREE.MeshStandardMaterial()
 material.metalness = 0.7
 material.roughness = 0.2
 material.normalMap = normalTexture
-material.color = new THREE.Color(0x181818) //0xFFFFFF
+material.color = new THREE.Color(0x181818) 
 
 const materialGold = new THREE.MeshStandardMaterial()
 materialGold.metalness = 0.8
 materialGold.roughness = 0.2
-materialGold.color = new THREE.Color(0xFFD700) //0xFFFFFF
+materialGold.color = new THREE.Color(0xFFD700) 
 
 const materialFloor = new THREE.MeshStandardMaterial()
 materialFloor.opacity = 0.7
+materialFloor.color = new THREE.Color(0xffffff)
 
+// GUI pillar color
+const floorColor = gui.addFolder('Pillar color')
+const pillarColor = { color: 0xFFFFFF}
+floorColor.addColor(pillarColor, 'color')
+    .onChange(() => {
+        materialFloor.color.set(pillarColor.color)
+    })
 
 // Mesh
 const plane = new THREE.Mesh(planeGeometry,materialGold)
@@ -52,10 +60,10 @@ const floor = new THREE.Mesh(floorGeometry, materialFloor)
 scene.add(plane, plane2, plane3, box, floor)
 
 // Mesh positioning
-plane.position.y = 0.6
-plane2.position.y = 0.6
-plane3.position.y = 0.6
-box.position.y = 0.6
+plane.position.y = 0.7
+plane2.position.y = 0.7
+plane3.position.y = 0.7
+box.position.y = 0.7
 floor.position.set(0, -5.5, 0) 
 
 // Mesh shadow collisions
@@ -71,7 +79,7 @@ floor.receiveShadow = true
 
 // Lights
 
-const pointLight = new THREE.PointLight(0xffffff, 0.5)
+const pointLight = new THREE.DirectionalLight(0xffffff, 0.5)
 pointLight.position.x = 0
 pointLight.position.y = 10
 pointLight.position.z = 0
@@ -175,8 +183,8 @@ const camera1 = gui.addFolder('Camera 1')
 camera1.add(camera.position, 'z').min(2).max(10).step(0.5)
 
 // Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
+// const controls = new OrbitControls(camera, canvas)
+// controls.enableDamping = true
 
 /**
  * Renderer
@@ -229,9 +237,11 @@ const tick = () =>
     // 
     plane.rotation.y = .5 * elapsedTime
     plane.rotation.x = 0.5 * elapsedTime
+    plane.rotation.y += .5 * (targetX - plane.rotation.y)
 
     plane3.rotation.y = -(.5 * elapsedTime) * 2
     plane3.rotation.x = 0.5 * elapsedTime
+    plane3.rotation.y += .5 * (targetX - plane.rotation.y)
 
     box.rotation.y = -(.5 * elapsedTime - 10 * 5)
     box.rotation.x = 0.5 * elapsedTime
@@ -239,7 +249,7 @@ const tick = () =>
     box.rotation.y += .5 * (targetX - plane.rotation.y)
 
     // Update Orbital Controls -> controle de la scène
-    controls.update()
+    // controls.update()
 
     // Render
     renderer.render(scene, camera)
