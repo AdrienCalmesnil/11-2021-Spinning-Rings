@@ -39,7 +39,6 @@ materialGold.roughness = 0.2
 materialGold.color = new THREE.Color(0xFFD700) //0xFFFFFF
 
 const materialFloor = new THREE.MeshStandardMaterial()
-// const materialFloor = new THREE.ShadowMaterial()
 materialFloor.opacity = 0.7
 
 
@@ -52,29 +51,36 @@ const floor = new THREE.Mesh(floorGeometry, materialFloor)
 
 scene.add(plane, plane2, plane3, box, floor)
 
-plane.position.y = 1
-plane2.position.y = 1
-plane3.position.y = 1
-box.position.y = 1
-
+// Mesh positioning
+plane.position.y = 0.6
+plane2.position.y = 0.6
+plane3.position.y = 0.6
+box.position.y = 0.6
 floor.position.set(0, -5.5, 0) 
+
+// Mesh shadow collisions
+plane.castShadow = true
+plane.receiveShadow = true
+plane2.castShadow = true
+plane2.receiveShadow = true
+plane3.castShadow = true
+plane3.receiveShadow = true
+box.castShadow = true
+box.receiveShadow = true
 floor.receiveShadow = true
-
-
-
-
 
 // Lights
 
-const pointLight = new THREE.PointLight(0xffffff, 0.1)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
+const pointLight = new THREE.PointLight(0xffffff, 0.5)
+pointLight.position.x = 0
+pointLight.position.y = 10
+pointLight.position.z = 0
+pointLight.castShadow = true
 scene.add(pointLight)
 
 const light1 = gui.addFolder('Light 1')
 
-light1.add(pointLight.position, 'y').min(-3).max(3).step(0.01)
+light1.add(pointLight.position, 'y').min(-3).max(10).step(0.01)
 light1.add(pointLight.position, 'x').min(-6).max(6).step(0.01)
 light1.add(pointLight.position, 'z').min(-3).max(4).step(0.01)
 light1.add(pointLight, 'intensity').min(0).max(10).step(0.01)
@@ -108,9 +114,10 @@ light2.addColor(light2Color, 'color')
 
 // Light 3
 
-const pointLight3 = new THREE.PointLight(0xffffff, 2)
-pointLight3.position.set( 0.62, 0.11, 3)
-pointLight3.intensity = 1.82
+const pointLight3 = new THREE.PointLight(0xffffff)
+pointLight3.position.set( 6, 0.76, 3)
+pointLight3.intensity = 0.8
+pointLight3.castShadow = true
 scene.add(pointLight3)
 
 const light3 = gui.addFolder('Light 3')
@@ -178,6 +185,7 @@ const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     alpha: true //supprime le background 
 })
+renderer.shadowMap.enabled = true // turn on shadows in the renderer
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
