@@ -1,4 +1,4 @@
-# Three.js Starter
+# Three.js Spinning rings animation
 Courtesy of Bruno Simon of https://threejs-journey.xyz/
 
 ## Setup
