@@ -11,8 +11,7 @@ body
 {
     height: 100vh;
     font-family: 'Poppins';
-    background: rgb(255,215,0);
-    background: radial-gradient(circle, rgba(255,215,0,1) 0%, rgb(0, 0, 0) 100%);
+    background: radial-gradient(circle, rgb(173, 172, 166) 0%, rgb(0, 0, 0) 100%);
 }
 
 body{
