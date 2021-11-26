@@ -1,5 +1,5 @@
 # Three.js Spinning rings animation
-Courtesy of Bruno Simon of https://threejs-journey.xyz/
+Try it https://spinningrings.netlify.app/
 
 ## Setup
 Download [Node.js](https://nodejs.org/en/download/).
